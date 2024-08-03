@@ -1,7 +1,7 @@
 TARGET_EXEC := opengl
 
 CC := g++
-CFLAGS = -Wall -Wextra -pedantic
+CFLAGS = -Wall -Wextra -Werror -std=c++20 -pedantic
 
 debug ?= 0
 ifeq ($(debug), 1)
