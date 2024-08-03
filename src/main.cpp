@@ -16,18 +16,7 @@ int main()
 {
     GLFWwindow *window = initWindow(SCR_WIDTH, SCR_HEIGHT, WINDOW_TITLE);
     // Window Loop
-    while (!glfwWindowShouldClose(window))
-    {
-        processInput(window);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+    renderingLoop(window);
     glfwTerminate();
     return 0;
-}
-
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
 }

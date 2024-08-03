@@ -4,8 +4,9 @@
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void processInput(GLFWwindow *window);
 
-GLFWwindow* initWindow(int width, int height, const char* title)
+GLFWwindow *initWindow(int width, int height, const char *title)
 {
 
     glfwInit();
@@ -28,7 +29,23 @@ GLFWwindow* initWindow(int width, int height, const char* title)
     return window;
 }
 
+void renderingLoop(GLFWwindow *window)
+{
+    while (!glfwWindowShouldClose(window))
+    {
+        processInput(window);
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+}
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }
