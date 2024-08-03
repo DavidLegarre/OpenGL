@@ -23,6 +23,7 @@ TESTS_DIR := tests
 BIN_DIR := bin
 
 
+SRC_DIRS := $(SRC_DIR) $(LIB_DIR)
 SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
@@ -51,7 +52,7 @@ dir:
 clean:
 	rm -r $(BUILD_DIR)
 
-run: $(BUILD_DIR)/$(TARGET_EXEC) clean
+run: $(BUILD_DIR)/$(TARGET_EXEC) 
 	./$(TARGET_EXEC)
 
 
