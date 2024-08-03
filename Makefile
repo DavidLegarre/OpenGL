@@ -23,7 +23,7 @@ TESTS_DIR := tests
 BIN_DIR := bin
 
 
-SRC_DIRS := $(SRC_DIR) $(LIB_DIR)
+SRC_DIRS := $(SRC_DIR) $(INCLUDE_DIR) $(LIB_DIR)
 SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
