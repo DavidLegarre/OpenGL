@@ -4,39 +4,22 @@
 #include <iostream>
 
 #include "window.h"
+#include "shader.h"
 
 void renderingLoop(GLFWwindow *window);
 unsigned int VBOInit();
 unsigned int VAOInit();
-int createShaderProgram();
-enum Shader {VERTEX_SHADER, FRAGMENT_SHADER};
-int compileShader(enum Shader shaderType);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 const char WINDOW_TITLE[] = "LearnOpenGL";
 
-const char *vertexShaderSource =
-    "#version 460 core\n"
-    "layout (location = 0) in vec3 aPos;"
-    "void main()"
-    "{"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);"
-    "}";
-
-const char *fragmentShaderSource =
-    "#version 460 core\n"
-    "out vec4 FragColor;"
-    "void main()"
-    "{"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);"
-    "}";
-
 float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f, 0.5f, 0.0f};
-
+    // positions         // colors
+    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
+    0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top
+};
 
 int main()
 {
@@ -51,14 +34,14 @@ void renderingLoop(GLFWwindow *window)
 {
     unsigned int VBO = VBOInit();
     unsigned int VAO = VAOInit();
-    unsigned int shaderProgram = createShaderProgram();
+    Shader shader("src/shaders/shader.vs", "src/shaders/shader.fs");
 
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shaderProgram);
+        shader.use();
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -89,66 +72,13 @@ unsigned int VAOInit()
     // Bind VAO
     glBindVertexArray(VAO);
     // Vertex Attrib
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    unsigned int vertexSize = 6 * sizeof(float);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, (void *)0);
     glEnableVertexAttribArray(0);
+    // Color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, (void *)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     return VAO;
-}
-
-int createShaderProgram()
-{
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    // Compile the shaders for the program
-    unsigned int vertexShader = compileShader(VERTEX_SHADER);
-    unsigned int fragmentShader = compileShader(FRAGMENT_SHADER);
-    // Attach shaders to program
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    // Link shader program
-    glLinkProgram(shaderProgram);
-
-    // Delete the shaders
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return shaderProgram;
-}
-
-int compileShader(enum Shader shaderType)
-{
-    // Create the Shader
-    unsigned int shader;
-    const char *shaderSource;
-    switch (shaderType) {
-        case VERTEX_SHADER:
-            shader = glCreateShader(GL_VERTEX_SHADER);
-            shaderSource = vertexShaderSource;
-            break;
-        case FRAGMENT_SHADER:
-            shader = glCreateShader(GL_FRAGMENT_SHADER);
-            shaderSource = fragmentShaderSource;
-            break;
-        default:
-            throw std::runtime_error("Invalid fragment type"); // Throw an exception
-            break;
-
-    }
-    // Attach the shader source code
-    glShaderSource(shader, 1, &shaderSource, nullptr);
-    // Compile shader source
-    glCompileShader(shader);
-
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-                  << infoLog << std::endl;
-    }
-
-    return shader;
 }
