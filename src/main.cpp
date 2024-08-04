@@ -13,7 +13,6 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 const char WINDOW_TITLE[] = "LearnOpenGL";
 
-
 int main()
 {
     GLFWwindow *window = initWindow(SCR_WIDTH, SCR_HEIGHT, WINDOW_TITLE);
@@ -28,6 +27,8 @@ void renderingLoop(GLFWwindow *window)
     unsigned int VBO = VBOInit();
     unsigned int VAO = VAOInit();
     Shader shader("src/shaders/shader.vs", "src/shaders/shader.fs");
+    float offset = -0.7f;
+    shader.setFloat("xOffset", offset);
 
     while (!glfwWindowShouldClose(window))
     {
