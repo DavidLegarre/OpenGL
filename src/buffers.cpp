@@ -3,12 +3,12 @@
 #include "buffers.h"
 
 float vertices[] = {
-    // positions         // colors
-    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
-    0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top
+    // positions          // colors           // texture coords
+    0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
+    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
 };
-
 unsigned int VBOInit()
 {
     // Defines and initializes the Vertex Buffer Object (VBO)
@@ -32,14 +32,19 @@ unsigned int VAOInit()
     glGenVertexArrays(1, &VAO);
     // Bind VAO
     glBindVertexArray(VAO);
-    // Vertex Attrib
-    unsigned int vertexSize = 6 * sizeof(float);
+
+    // Vertex Attribs
+    unsigned int vertexSize = 8 * sizeof(float);
+
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, (void *)0);
     glEnableVertexAttribArray(0);
     // Color attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    // Texture coordinates
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexSize, (void *)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     return VAO;
 }

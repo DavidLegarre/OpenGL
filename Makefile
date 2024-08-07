@@ -3,7 +3,7 @@ TARGET_EXEC := opengl
 CC := g++
 CFLAGS = -Wall -Wextra -Werror -std=c++20 -pedantic
 
-debug ?= 0
+debug ?= 1
 ifeq ($(debug), 1)
 	CFLAGS := $(CFLAGS) -g -O0
 else
