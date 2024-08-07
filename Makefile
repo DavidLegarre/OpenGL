@@ -11,7 +11,7 @@ else
 endif
 
 LDFLAGS := -lm
-GLLIBRARIES = -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lglfw -lm -lGLU
+GLLIBRARIES = -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lglfw3 -lm -lGLU
 LDFLAGS += $(GLLIBRARIES)
 
 # dirs
