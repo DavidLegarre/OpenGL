@@ -2,5 +2,5 @@
 #define BUFFERS_H
 unsigned int VBOInit();
 unsigned int VAOInit();
-void setVAOAttrib();
+unsigned int EBOInit();
 #endif

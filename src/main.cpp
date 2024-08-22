@@ -27,6 +27,7 @@ void renderingLoop(GLFWwindow *window)
 {
     unsigned int VBO = VBOInit();
     unsigned int VAO = VAOInit();
+    unsigned int EBO = EBOInit();
     Shader shader("src/shaders/shader.vs", "src/shaders/shader.fs");
     Texture texture("src/textures/wall.jpg");
     float offset = -0.7f;
@@ -35,11 +36,14 @@ void renderingLoop(GLFWwindow *window)
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindTexture(GL_TEXTURE_2D, texture.ID);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

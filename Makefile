@@ -7,7 +7,7 @@ debug ?= 1
 ifeq ($(debug), 1)
 	CFLAGS := $(CFLAGS) -g -O0
 else
-	CFLAGS := $(CFLAGS) -Oz
+	CFLAGS := $(CFLAGS) -O0
 endif
 
 LDFLAGS := -lm
